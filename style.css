@@ -642,51 +642,23 @@ body {
         max-width: 120px;
     }
 }
-/* ---------- MOBILE VIEW (PROPORTIONAL SCALING) ---------- */
+/* ---------- MOBILE VIEW HEADER ADJUSTMENT ---------- */
 @media (max-width: 768px) {
-    /* Reduces overall scaling by shrinking root font size */
-    html {
-        font-size: 85%;
-    }
-
-    /* Keeps header elements intact, just shrinks spacing and logo */
+    /* Main navigation container stays on a single line */
     .navigation {
-        padding: 10px 15px;
-        gap: 8px;
-    }
-
-    .brand-container img {
-        width: 45px;
-        height: 45px;
-    }
-
-    .tagline {
-        font-size: 14px;
-        max-width: 110px;
-    }
-
-    .nav {
-        gap: 10px;
-    }
-
-    .nav a {
-        font-size: 9px;
-    }
-
-    #cart-btn {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
-}
-
-@media (max-width: 480px) {
-    /* Extra slight reduction for smaller phone screens */
-    html {
-        font-size: 78%;
-    }
-
-    .navigation {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
         padding: 8px 10px;
+        gap: 6px;
+    }
+
+    /* Brand logo + cursive tagline styling */
+    .brand-container {
+        display: flex;
+        align-items: center;
+        gap: 6px;
     }
 
     .brand-container img {
@@ -695,7 +667,108 @@ body {
     }
 
     .tagline {
-        font-size: 12px;
-        max-width: 95px;
+        font-size: 11px;
+        max-width: 85px;
+        line-height: 1;
+    }
+
+    /* Keeps HOME, MENU, and CONTACT US in one horizontal row */
+    .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .nav a {
+        white-space: nowrap;
+        font-size: 10px;
+        padding: 2px 0;
+    }
+
+    /* Scaled-down cart button */
+    #cart-btn {
+        padding: 5px 8px;
+        font-size: 10px;
+        white-space: nowrap;
+    }
+}
+/* ---------- TABLETS & LARGE PHONES (max-width: 600px) ---------- */
+@media (max-width: 600px) {
+    .navigation {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 8px 10px;
+        gap: 6px;
+    }
+
+    .brand-container {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .brand-container img {
+        width: 36px;
+        height: 36px;
+    }
+
+    .tagline {
+        font-size: 11px;
+        max-width: 85px;
+        line-height: 1;
+    }
+
+    /* Keeps HOME, MENU, and CONTACT US strictly side-by-side */
+    .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .nav a {
+        white-space: nowrap;
+        font-size: 10px;
+        padding: 2px 0;
+    }
+
+    #cart-btn {
+        padding: 5px 8px;
+        font-size: 10px;
+        white-space: nowrap;
+    }
+}
+
+/* ---------- SMALL MOBILE PHONES (max-width: 480px) ---------- */
+@media (max-width: 480px) {
+    .navigation {
+        padding: 6px 8px;
+        gap: 4px;
+    }
+
+    .brand-container img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .tagline {
+        font-size: 9px;
+        max-width: 70px;
+    }
+
+    .nav {
+        gap: 4px;
+    }
+
+    .nav a {
+        font-size: 9px;
+    }
+
+    #cart-btn {
+        padding: 4px 6px;
+        font-size: 9px;
     }
 }
