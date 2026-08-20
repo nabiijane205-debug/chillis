@@ -33,7 +33,7 @@ const menuData = [
         name: "Loaded Sweet Potato Wedges",
         desc: "Loaded sweet potato wedges served with freshly made guacamole.",
         price: 1250,
-        image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80",
+        image: "day.jfif",
         highlight: "Creamy. Comforting. Unforgettable."
     },
     {

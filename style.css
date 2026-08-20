@@ -612,3 +612,90 @@ body {
         grid-template-columns: repeat(4, 1fr);
     }
 }
+/* ---------- BRAND & CURSIVE TAGLINE ---------- */
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-container img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.tagline {
+    font-family: 'Dancing Script', cursive;
+    font-size: 20px;
+    font-weight: 700;
+    color: #0F5C5A;
+    line-height: 1.1;
+    max-width: 160px;
+}
+
+/* Adjust responsiveness for mobile screens */
+@media (max-width: 600px) {
+    .tagline {
+        font-size: 15px;
+        max-width: 120px;
+    }
+}
+/* ---------- MOBILE VIEW (PROPORTIONAL SCALING) ---------- */
+@media (max-width: 768px) {
+    /* Reduces overall scaling by shrinking root font size */
+    html {
+        font-size: 85%;
+    }
+
+    /* Keeps header elements intact, just shrinks spacing and logo */
+    .navigation {
+        padding: 10px 15px;
+        gap: 8px;
+    }
+
+    .brand-container img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .tagline {
+        font-size: 14px;
+        max-width: 110px;
+    }
+
+    .nav {
+        gap: 10px;
+    }
+
+    .nav a {
+        font-size: 12px;
+    }
+
+    #cart-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Extra slight reduction for smaller phone screens */
+    html {
+        font-size: 78%;
+    }
+
+    .navigation {
+        padding: 8px 10px;
+    }
+
+    .brand-container img {
+        width: 38px;
+        height: 38px;
+    }
+
+    .tagline {
+        font-size: 12px;
+        max-width: 95px;
+    }
+}
