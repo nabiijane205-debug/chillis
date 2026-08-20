@@ -239,6 +239,15 @@ body {
     text-transform: uppercase;
 }
 
+.menu-card.disabled-card {
+    opacity: 0.75;
+    background-color: #f2efe9;
+}
+
+.today-tag.unavailable-tag {
+    background: #777;
+}
+
 .menu-card .dish-name {
     font-size: 14px;
     font-weight: bold;
@@ -256,6 +265,24 @@ body {
     color: #E3A72E;
     font-weight: bold;
     margin-top: 6px;
+}
+
+.card-add-btn {
+    width: 100%;
+    margin-top: 8px;
+    padding: 6px;
+    border-radius: 12px;
+    border: none;
+    background-color: #0F5C5A;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.card-add-btn.btn-disabled {
+    background-color: #888;
+    cursor: not-allowed;
 }
 
 /* ---------- CONTACT SECTION ---------- */
@@ -512,6 +539,44 @@ body {
     display: block;
     color: #5F5E5A;
     margin-top: 2px;
+}
+
+.payment-method-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 8px 0 12px;
+}
+
+.stk-action-btn {
+    width: 100%;
+    background-color: #2E7D32;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.stk-action-btn:hover {
+    background-color: #1b5e20;
+}
+
+.stk-status-msg {
+    margin-top: 8px;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.stk-status-msg.success {
+    color: #2E7D32;
+}
+
+.stk-status-msg.pending {
+    color: #E3A72E;
 }
 
 #send-whatsapp-btn {

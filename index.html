@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chilli's Diner</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=1.2">
 </head>
 <body>
 
@@ -90,7 +90,7 @@
             <label for="cust-name">Customer Name</label>
             <input type="text" id="cust-name" placeholder="e.g. Wanjiru Kamau">
 
-            <label for="cust-phone">Phone Number</label>
+            <label for="cust-phone">Contact Phone Number</label>
             <input type="text" id="cust-phone" placeholder="07XX XXX XXX">
 
             <label>Order Type</label>
@@ -116,22 +116,47 @@
             <label for="special-instructions">Special Instructions (Optional)</label>
             <textarea id="special-instructions" rows="2" placeholder="e.g. Extra sauce, no onions, white rice instead of ugali"></textarea>
 
-            <div class="payment-box">
-                <strong>Payment via M-Pesa</strong>
+            <!-- PAYMENT METHOD SELECTION -->
+            <label style="margin-top: 16px; font-weight: bold;">Select Payment Method</label>
+            <div class="payment-method-group">
+                <label class="radio-label">
+                    <input type="radio" name="payment-method" value="stk" checked id="pay-stk"> M-Pesa Prompt (STK Push)
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="payment-method" value="manual" id="pay-manual"> Pay via Till Manually
+                </label>
+            </div>
+
+            <!-- SECTION A: STK PUSH PROMPT -->
+            <div id="stk-section" class="payment-box">
+                <strong>M-Pesa Express (STK Push)</strong>
+                <p style="font-size: 12px; color: #555; margin: 4px 0 8px;">A prompt will be sent directly to this phone number to enter your PIN.</p>
+                <label for="mpesa-phone">M-Pesa Number</label>
+                <input type="text" id="mpesa-phone" placeholder="07XXXXXXXX or 01XXXXXXXX">
+                <button type="button" id="trigger-stk-btn" class="stk-action-btn">Request M-Pesa Prompt</button>
+                <div id="stk-status" class="stk-status-msg"></div>
+            </div>
+
+            <!-- SECTION B: MANUAL TILL PAYMENT -->
+            <div id="manual-section" class="payment-box" style="display: none;">
+                <strong>Manual M-Pesa Till Payment</strong>
                 <div class="till-row">
                     <p>Buy Goods Till: <span class="till-no" id="till-number">123456</span></p>
                     <button type="button" id="copy-till-btn">Copy Till</button>
                 </div>
                 <small>Name: Chilli's Diner</small>
+                
+                <label for="mpesa-code" style="margin-top: 10px;">M-Pesa Transaction Code</label>
+                <input type="text" id="mpesa-code" placeholder="e.g. QK8492HD82" style="text-transform: uppercase;">
             </div>
 
             <p class="checkout-summary" id="checkout-summary"></p>
 
-            <button type="button" id="send-whatsapp-btn">Send Order via WhatsApp</button>
+            <button type="button" id="send-whatsapp-btn">Complete & Send Order via WhatsApp</button>
             <p class="error-msg" id="checkout-error"></p>
         </div>
     </div>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=1.2"></script>
 </body>
 </html>

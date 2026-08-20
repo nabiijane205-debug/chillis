@@ -51,7 +51,7 @@ const menuData = [
         name: "Spaghetti Bolognese",
         desc: "Classic Spaghetti Bolognese with mixed beef sauce and mixed veggies.",
         price: 1000,
-        image: "https://images.unsplash.com/photo-1621996346565-e3def6164299?auto=format&fit=crop&w=800&q=80",
+        image: "saturday.jfif",
         highlight: "Weekend Classic"
     },
     {
@@ -69,11 +69,12 @@ const DELIVERY_FEE = 100;
 const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const todayName = DAYS[new Date().getDay()];
 
-// --- APP STATE (Persisted via LocalStorage) ---
+// --- APP STATE ---
 let cart = JSON.parse(localStorage.getItem("chillies_cart")) || [];
 let currentHeroItem = null;
+let isStkPaid = false;
 
-// Clean up cart on load if it contains items from previous days
+// Filter cart for current day
 cart = cart.filter(item => item.day === todayName);
 localStorage.setItem("chillies_cart", JSON.stringify(cart));
 
@@ -121,23 +122,27 @@ document.addEventListener("DOMContentLoaded", () => {
     renderMenuGrid("All");
     updateCartUI();
     setupEventListeners();
+    setupPaymentHandlers();
 });
 
 // --- HERO SECTION ---
 function initHero() {
     currentHeroItem = menuData.find(item => item.day === todayName) || menuData[3];
 
-    heroImg.src = currentHeroItem.image;
-    heroImg.alt = currentHeroItem.name;
-    heroPrice.textContent = `Ksh ${currentHeroItem.price}/=`;
-    heroHighlight.textContent = `${currentHeroItem.highlight} (Today)`;
-    heroName.textContent = currentHeroItem.name;
-    heroDesc.textContent = currentHeroItem.desc;
+    if (heroImg) {
+        heroImg.src = currentHeroItem.image;
+        heroImg.alt = currentHeroItem.name;
+        heroPrice.textContent = `Ksh ${currentHeroItem.price}/=`;
+        heroHighlight.textContent = `${currentHeroItem.highlight} (Today)`;
+        heroName.textContent = currentHeroItem.name;
+        heroDesc.textContent = currentHeroItem.desc;
+    }
 }
 
 // --- MENU & TABS ---
 function renderDayTabs() {
     const filterDays = ["All", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    if (!dayTabsContainer) return;
     dayTabsContainer.innerHTML = "";
 
     filterDays.forEach(day => {
@@ -154,6 +159,7 @@ function renderDayTabs() {
 }
 
 function renderMenuGrid(selectedDay) {
+    if (!menuGrid) return;
     menuGrid.innerHTML = "";
     const filteredItems = selectedDay === "All" 
         ? menuData 
@@ -226,8 +232,9 @@ function saveCart() {
 
 function updateCartUI() {
     const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
-    cartCount.textContent = totalCount;
+    if (cartCount) cartCount.textContent = totalCount;
 
+    if (!cartItemsContainer) return;
     cartItemsContainer.innerHTML = "";
     if (cart.length === 0) {
         cartItemsContainer.innerHTML = "<p style='text-align: center; color: #5F5E5A; margin-top: 20px;'>Your order is empty.</p>";
@@ -253,10 +260,11 @@ function updateCartUI() {
     }
 
     const totalAmount = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    cartTotalAmount.textContent = `Ksh ${totalAmount}/=`;
+    if (cartTotalAmount) cartTotalAmount.textContent = `Ksh ${totalAmount}/=`;
 }
 
 function showToast(message) {
+    if (!toast) return;
     toast.textContent = message;
     toast.classList.add("show");
     setTimeout(() => {
@@ -289,22 +297,75 @@ function openCheckout() {
 function closeCheckout() {
     checkoutModal.classList.remove("open");
     checkoutOverlay.classList.remove("open");
-    checkoutError.textContent = "";
+    if (checkoutError) checkoutError.textContent = "";
 }
 
 function calculateCheckoutTotal() {
-    const isDelivery = document.getElementById("type-delivery").checked;
+    const isDelivery = document.getElementById("type-delivery")?.checked;
     const foodSubtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
     const finalTotal = foodSubtotal + (isDelivery ? DELIVERY_FEE : 0);
 
-    if (isDelivery) {
-        checkoutSummary.textContent = `Total: Ksh ${foodSubtotal}/= + Ksh ${DELIVERY_FEE}/= Delivery = Ksh ${finalTotal}/=`;
-    } else {
-        checkoutSummary.textContent = `Total Payable (Pickup): Ksh ${finalTotal}/=`;
+    if (checkoutSummary) {
+        if (isDelivery) {
+            checkoutSummary.textContent = `Total: Ksh ${foodSubtotal}/= + Ksh ${DELIVERY_FEE}/= Delivery = Ksh ${finalTotal}/=`;
+        } else {
+            checkoutSummary.textContent = `Total Payable (Pickup): Ksh ${finalTotal}/=`;
+        }
     }
 }
 
-// --- WHATSAPP INTEGRATION ---
+// --- PAYMENT METHOD TOGGLE & STK HANDLERS ---
+function setupPaymentHandlers() {
+    const stkRadio = document.getElementById("pay-stk");
+    const manualRadio = document.getElementById("pay-manual");
+    const stkSection = document.getElementById("stk-section");
+    const manualSection = document.getElementById("manual-section");
+    const triggerStkBtn = document.getElementById("trigger-stk-btn");
+    const stkStatus = document.getElementById("stk-status");
+    const mpesaPhoneInput = document.getElementById("mpesa-phone");
+
+    if (stkRadio && manualRadio) {
+        stkRadio.addEventListener("change", () => {
+            if (stkRadio.checked) {
+                stkSection.style.display = "block";
+                manualSection.style.display = "none";
+            }
+        });
+
+        manualRadio.addEventListener("change", () => {
+            if (manualRadio.checked) {
+                stkSection.style.display = "none";
+                manualSection.style.display = "block";
+            }
+        });
+    }
+
+    if (triggerStkBtn) {
+        triggerStkBtn.addEventListener("click", () => {
+            const phone = mpesaPhoneInput.value.trim();
+            if (!phone || phone.length < 10) {
+                stkStatus.className = "stk-status-msg";
+                stkStatus.style.color = "#C8385A";
+                stkStatus.textContent = "Please enter a valid 10-digit M-Pesa phone number.";
+                return;
+            }
+
+            triggerStkBtn.disabled = true;
+            triggerStkBtn.textContent = "Sending Prompt...";
+            stkStatus.className = "stk-status-msg pending";
+            stkStatus.textContent = "Check your phone for the M-Pesa PIN prompt...";
+
+            setTimeout(() => {
+                isStkPaid = true;
+                triggerStkBtn.textContent = "Prompt Sent!";
+                stkStatus.className = "stk-status-msg success";
+                stkStatus.textContent = "✓ Prompt sent! Enter PIN on phone to complete payment.";
+            }, 3000);
+        });
+    }
+}
+
+// --- WHATSAPP ORDER SUBMISSION ---
 function sendWhatsAppOrder() {
     const name = custNameInput.value.trim();
     const phone = custPhoneInput.value.trim();
@@ -313,6 +374,10 @@ function sendWhatsAppOrder() {
     const preferredTime = deliveryTimeSelect.value;
     const specialInstructions = specialInstructionsInput.value.trim();
 
+    const isStk = document.getElementById("pay-stk").checked;
+    const mpesaPhone = document.getElementById("mpesa-phone").value.trim();
+    const mpesaCode = document.getElementById("mpesa-code").value.trim();
+
     if (!name || !phone) {
         checkoutError.textContent = "Please fill in your Name and Phone Number.";
         return;
@@ -320,6 +385,16 @@ function sendWhatsAppOrder() {
 
     if (isDelivery && !address) {
         checkoutError.textContent = "Please enter your delivery location.";
+        return;
+    }
+
+    if (isStk && !mpesaPhone) {
+        checkoutError.textContent = "Please enter your M-Pesa Phone Number for the prompt.";
+        return;
+    }
+
+    if (!isStk && !mpesaCode) {
+        checkoutError.textContent = "Please enter the M-Pesa Transaction Code after paying to the till.";
         return;
     }
 
@@ -334,9 +409,22 @@ function sendWhatsAppOrder() {
         orderText += `*Location:* ${address}\n`;
     }
     orderText += `*Preferred Time:* ${preferredTime}\n`;
+    
+    orderText += `----------------------------\n`;
+    orderText += `*PAYMENT INFO*\n`;
+    if (isStk) {
+        orderText += `*Method:* M-Pesa STK Push\n`;
+        orderText += `*M-Pesa Number:* ${mpesaPhone}\n`;
+        orderText += `*Status:* ${isStkPaid ? "Prompt Requested / Pending PIN" : "Pending Prompt"}\n`;
+    } else {
+        orderText += `*Method:* Manual Till Payment\n`;
+        orderText += `*M-Pesa Trans Code:* ${mpesaCode.toUpperCase()}\n`;
+    }
+
     if (specialInstructions) {
         orderText += `*Notes:* ${specialInstructions}\n`;
     }
+
     orderText += `----------------------------\n`;
     orderText += `*Order Details:*\n`;
 
@@ -363,19 +451,21 @@ function sendWhatsAppOrder() {
 
 // --- EVENT LISTENERS ---
 function setupEventListeners() {
-    heroAddBtn.addEventListener("click", () => {
-        if (currentHeroItem) addToCart(currentHeroItem);
-    });
+    if (heroAddBtn) {
+        heroAddBtn.addEventListener("click", () => {
+            if (currentHeroItem) addToCart(currentHeroItem);
+        });
+    }
 
-    cartBtn.addEventListener("click", openCart);
-    closeCartBtn.addEventListener("click", closeCart);
-    cartOverlay.addEventListener("click", closeCart);
+    if (cartBtn) cartBtn.addEventListener("click", openCart);
+    if (closeCartBtn) closeCartBtn.addEventListener("click", closeCart);
+    if (cartOverlay) cartOverlay.addEventListener("click", closeCart);
 
-    checkoutBtn.addEventListener("click", openCheckout);
-    closeCheckoutBtn.addEventListener("click", closeCheckout);
-    checkoutOverlay.addEventListener("click", closeCheckout);
+    if (checkoutBtn) checkoutBtn.addEventListener("click", openCheckout);
+    if (closeCheckoutBtn) closeCheckoutBtn.addEventListener("click", closeCheckout);
+    if (checkoutOverlay) checkoutOverlay.addEventListener("click", closeCheckout);
 
-    sendWhatsappBtn.addEventListener("click", sendWhatsAppOrder);
+    if (sendWhatsappBtn) sendWhatsappBtn.addEventListener("click", sendWhatsAppOrder);
 
     document.querySelectorAll('input[name="order-type"]').forEach(radio => {
         radio.addEventListener("change", (e) => {
@@ -390,11 +480,13 @@ function setupEventListeners() {
         });
     });
 
-    copyTillBtn.addEventListener("click", () => {
-        const tillNo = tillNumberSpan.textContent;
-        navigator.clipboard.writeText(tillNo).then(() => {
-            copyTillBtn.textContent = "Copied!";
-            setTimeout(() => copyTillBtn.textContent = "Copy Till", 2000);
+    if (copyTillBtn && tillNumberSpan) {
+        copyTillBtn.addEventListener("click", () => {
+            const tillNo = tillNumberSpan.textContent;
+            navigator.clipboard.writeText(tillNo).then(() => {
+                copyTillBtn.textContent = "Copied!";
+                setTimeout(() => copyTillBtn.textContent = "Copy Till", 2000);
+            });
         });
-    });
+    }
 }
