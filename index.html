@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chilli's Diner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="navigation">
+        <img src="poster.jfif" alt="Chilli's Diner logo">
+        <nav class="nav">
+            <a href="#">HOME</a>
+            <a href="#menu">MENU</a>
+            <a href="#contact">CONTACT US</a>
+        </nav>
+        <button type="button" id="cart-btn">YOUR ORDERS <span id="cart-count">0</span></button>
+    </header>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">Item added to cart!</div>
+
+    <section class="hero">
+        <div class="hero-image-wrapper">
+            <img id="hero-img" src="" alt="Today's special">
+            <span class="price-badge" id="hero-price"></span>
+            <span class="highlight-badge" id="hero-highlight"></span>
+        </div>
+        <div class="hero-content">
+            <h2 id="hero-name"></h2>
+            <p id="hero-desc"></p>
+            <button type="button" class="add-order-btn" id="hero-add-btn">Add to Order</button>
+        </div>
+    </section>
+
+    <section class="weekly-menu" id="menu">
+        <h3>This Week's Menu</h3>
+        <div class="day-tabs" id="day-tabs"></div>
+        <div class="menu-grid" id="menu-grid"></div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <h3>Contact Us</h3>
+        <div class="contact-cards">
+            <div class="contact-card">
+                <strong>Order Hotline</strong>
+                <a href="tel:0736992818">0736 992 818</a>
+            </div>
+            <div class="contact-card">
+                <strong>WhatsApp Order</strong>
+                <a href="https://wa.me/254736992818" target="_blank">Chat on WhatsApp</a>
+            </div>
+            <div class="contact-card">
+                <strong>Instagram</strong>
+                <a href="https://instagram.com/_justcallmejj" target="_blank">@_justcallmejj</a>
+            </div>
+            <div class="contact-card">
+                <strong>Location</strong>
+                <p>Juja, near JKUAT</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Drawer -->
+    <div class="cart-overlay" id="cart-overlay"></div>
+    <aside class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3>Your Order</h3>
+            <button type="button" id="close-cart">X</button>
+        </div>
+        <div class="cart-items" id="cart-items"></div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total</span>
+                <span id="cart-total-amount">Ksh 0/=</span>
+            </div>
+            <button type="button" id="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </aside>
+
+    <!-- Checkout Modal -->
+    <div class="modal-overlay" id="checkout-overlay"></div>
+    <div class="checkout-modal" id="checkout-modal">
+        <div class="checkout-header">
+            <h3>Checkout</h3>
+            <button type="button" id="close-checkout">X</button>
+        </div>
+        <div class="checkout-body">
+            <label for="cust-name">Customer Name</label>
+            <input type="text" id="cust-name" placeholder="e.g. Wanjiru Kamau">
+
+            <label for="cust-phone">Phone Number</label>
+            <input type="text" id="cust-phone" placeholder="07XX XXX XXX">
+
+            <label>Order Type</label>
+            <div class="order-type-group">
+                <label class="radio-label">
+                    <input type="radio" name="order-type" value="delivery" checked id="type-delivery"> Delivery (+Ksh 100)
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="order-type" value="pickup" id="type-pickup"> Pickup (Free)
+                </label>
+            </div>
+
+            <label for="cust-address" id="address-label">Delivery Location / Address</label>
+            <input type="text" id="cust-address" placeholder="e.g. Juja, Gate B">
+
+            <label for="delivery-time">Preferred Time</label>
+            <select id="delivery-time">
+                <option value="ASAP">ASAP (30-45 mins)</option>
+                <option value="Lunch (12:00 PM - 2:00 PM)">Lunch (12:00 PM - 2:00 PM)</option>
+                <option value="Dinner (6:00 PM - 8:00 PM)">Dinner (6:00 PM - 8:00 PM)</option>
+            </select>
+
+            <label for="special-instructions">Special Instructions (Optional)</label>
+            <textarea id="special-instructions" rows="2" placeholder="e.g. Extra sauce, no onions, white rice instead of ugali"></textarea>
+
+            <div class="payment-box">
+                <strong>Payment via M-Pesa</strong>
+                <div class="till-row">
+                    <p>Buy Goods Till: <span class="till-no" id="till-number">123456</span></p>
+                    <button type="button" id="copy-till-btn">Copy Till</button>
+                </div>
+                <small>Name: Chilli's Diner</small>
+            </div>
+
+            <p class="checkout-summary" id="checkout-summary"></p>
+
+            <button type="button" id="send-whatsapp-btn">Send Order via WhatsApp</button>
+            <p class="error-msg" id="checkout-error"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
