@@ -73,6 +73,10 @@ const todayName = DAYS[new Date().getDay()];
 let cart = JSON.parse(localStorage.getItem("chillies_cart")) || [];
 let currentHeroItem = null;
 
+// Clean up cart on load if it contains items from previous days
+cart = cart.filter(item => item.day === todayName);
+localStorage.setItem("chillies_cart", JSON.stringify(cart));
+
 // --- DOM ELEMENTS ---
 const heroImg = document.getElementById("hero-img");
 const heroPrice = document.getElementById("hero-price");
@@ -157,25 +161,41 @@ function renderMenuGrid(selectedDay) {
 
     filteredItems.forEach(item => {
         const card = document.createElement("div");
-        card.className = "menu-card";
-        
         const isToday = item.day === todayName;
+        
+        card.className = `menu-card ${!isToday ? 'disabled-card' : ''}`;
 
         card.innerHTML = `
-            ${isToday ? '<span class="today-tag">Today</span>' : ''}
+            <span class="today-tag ${!isToday ? 'unavailable-tag' : ''}">${isToday ? 'Today' : item.day}</span>
             <img src="${item.image}" alt="${item.name}">
             <span class="day-label">${item.day}</span>
             <div class="dish-name">${item.name}</div>
             <div class="dish-desc">${item.desc}</div>
             <div class="dish-price">Ksh ${item.price}/=</div>
+            <button type="button" class="card-add-btn ${!isToday ? 'btn-disabled' : ''}">
+                ${isToday ? 'Add to Order' : 'Only Available on ' + item.day}
+            </button>
         `;
-        card.addEventListener("click", () => addToCart(item));
+
+        card.addEventListener("click", () => {
+            if (isToday) {
+                addToCart(item);
+            } else {
+                showToast(`Sorry! ${item.name} is only available on ${item.day}s.`);
+            }
+        });
+
         menuGrid.appendChild(card);
     });
 }
 
 // --- CART FUNCTIONS ---
 function addToCart(item) {
+    if (item.day !== todayName) {
+        showToast(`This dish is only available on ${item.day}.`);
+        return;
+    }
+
     const existingIndex = cart.findIndex(cItem => cItem.id === item.id);
     if (existingIndex > -1) {
         cart[existingIndex].qty += 1;
@@ -357,7 +377,6 @@ function setupEventListeners() {
 
     sendWhatsappBtn.addEventListener("click", sendWhatsAppOrder);
 
-    // Delivery vs Pickup toggle listener
     document.querySelectorAll('input[name="order-type"]').forEach(radio => {
         radio.addEventListener("change", (e) => {
             if (e.target.value === "pickup") {
@@ -371,7 +390,6 @@ function setupEventListeners() {
         });
     });
 
-    // Copy Till Number button
     copyTillBtn.addEventListener("click", () => {
         const tillNo = tillNumberSpan.textContent;
         navigator.clipboard.writeText(tillNo).then(() => {
