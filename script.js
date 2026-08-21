@@ -442,7 +442,7 @@ function sendWhatsAppOrder() {
     }
     orderText += `*Grand Total:* Ksh ${grandTotal}/=\n`;
 
-    const restaurantPhoneNumber = "254736992818";
+    const restaurantPhoneNumber = "254748647277";
     const encodedMessage = encodeURIComponent(orderText);
     const whatsappURL = `https://wa.me/${restaurantPhoneNumber}?text=${encodedMessage}`;
 
@@ -489,4 +489,24 @@ function setupEventListeners() {
             });
         });
     }
+}
+
+// ---------- DARK / LIGHT THEME TOGGLE ----------
+const themeToggleBtn = document.getElementById('theme-toggle');
+
+if (themeToggleBtn) {
+    // Defaults strictly to 'light' mode unless explicitly changed to 'dark' by the user
+    const currentTheme = localStorage.getItem('theme') || 'light';
+
+    // Set initial theme on page load
+    document.documentElement.setAttribute('data-theme', currentTheme);
+
+    // Toggle theme on button click
+    themeToggleBtn.addEventListener('click', () => {
+        let theme = document.documentElement.getAttribute('data-theme');
+        let newTheme = theme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+    });
 }

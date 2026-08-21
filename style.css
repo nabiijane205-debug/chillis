@@ -772,3 +772,64 @@ body {
         font-size: 9px;
     }
 }
+/* ---------- COLOR VARIABLES & BASE STYLES ---------- */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #222222;
+    --card-bg: #f9f9f9;
+    --header-bg: #ffffff;
+    --accent-color: #0F5C5A;
+}
+
+/* Explicit Dark Theme Overrides */
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --text-color: #f0f0f0;
+    --card-bg: #1e1e1e;
+    --header-bg: #1a1a1a;
+    --accent-color: #26a69a;
+}
+
+/* Force body background and text color explicitly */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+header, .navigation {
+    background-color: var(--header-bg);
+}
+
+.menu-card, .card {
+    background-color: var(--card-bg);
+}
+#theme-toggle {
+    background: transparent;
+    border: 1px solid var(--accent-color);
+    color: var(--text-color);
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* Default state (Light Theme): Show moon icon to switch to dark */
+#theme-toggle .sun-icon {
+    display: none;
+}
+#theme-toggle .moon-icon {
+    display: block;
+}
+
+/* Dark Theme state: Show sun icon to switch to light */
+[data-theme="dark"] #theme-toggle .sun-icon {
+    display: block;
+}
+[data-theme="dark"] #theme-toggle .moon-icon {
+    display: none;
+}
