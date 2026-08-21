@@ -1,99 +1,163 @@
+/* ---------- 1. CSS VARIABLES & DARK MODE ---------- */
+:root {
+    --bg-color: #FAF6EF;
+    --text-color: #1C3B3A;
+    --text-muted: #5F5E5A;
+    --card-bg: #FFFFFF;
+    --header-bg: #FFFFFF;
+    --accent-gold: #E3A72E;
+    --accent-teal: #0F5C5A;
+    --border-color: #E2DDD5;
+    --disabled-bg: #F2EFE9;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --text-color: #EAEAEA;
+    --text-muted: #A0A0A0;
+    --card-bg: #1E1E1E;
+    --header-bg: #1A1A1A;
+    --accent-gold: #E3A72E;
+    --accent-teal: #26A69A;
+    --border-color: #2C2C2C;
+    --disabled-bg: #2A2A2A;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* ---------- 2. RESET & BASE STYLES ---------- */
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
     text-decoration: none;
     font-family: Arial, Helvetica, sans-serif;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
-    background-color: #FAF6EF;
-    color: #1C3B3A;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    overflow-x: hidden;
 }
 
-/* ---------- NAV ---------- */
+/* ---------- 3. NAVIGATION HEADER ---------- */
 .navigation {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 16px;
-    background-color: #FFFFFF;
+    background-color: var(--header-bg);
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s ease;
 }
 
-.navigation img {
-    width: 60px;
-    height: 60px;
+.brand-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.brand-container img {
+    width: 44px;
+    height: 44px;
     border-radius: 50%;
     object-fit: cover;
+    flex-shrink: 0;
 }
 
-.navigation .nav a {
-    margin-left: 20px;
-    color: #1C3B3A;
+.tagline {
+    font-family: 'Dancing Script', cursive;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--accent-teal);
+    line-height: 1.1;
+    max-width: 130px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.nav a {
+    color: var(--text-color);
     font-size: 14px;
     font-weight: bold;
+    transition: color 0.2s;
 }
 
-.navigation button {
-    padding: 10px 16px;
+.nav-right-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navigation button#cart-btn {
+    padding: 8px 14px;
     border-radius: 30px;
-    background-color: #E3A72E;
+    background-color: var(--accent-gold);
     color: #1C3B3A;
     border: none;
     font-weight: bold;
+    font-size: 13px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
 }
 
 #cart-count {
     background-color: #1C3B3A;
     color: white;
     border-radius: 50%;
-    padding: 2px 7px;
-    font-size: 12px;
-    margin-left: 4px;
+    padding: 2px 6px;
+    font-size: 11px;
+    margin-left: 5px;
 }
 
-/* ---------- TOAST NOTIFICATION ---------- */
-.toast {
-    visibility: hidden;
-    min-width: 200px;
-    background-color: #1C3B3A;
-    color: #fff;
-    text-align: center;
-    border-radius: 20px;
-    padding: 12px;
-    position: fixed;
-    z-index: 300;
-    left: 50%;
-    bottom: 30px;
-    transform: translateX(-50%);
-    font-size: 14px;
-    font-weight: bold;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+/* Dynamic Theme Toggle */
+#theme-toggle {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    flex-shrink: 0;
+    transition: background-color 0.2s, border-color 0.2s, transform 0.2s;
 }
 
-.toast.show {
-    visibility: visible;
-    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+#theme-toggle:active {
+    transform: scale(0.92);
 }
 
-@keyframes fadein {
-    from { bottom: 0; opacity: 0; }
-    to { bottom: 30px; opacity: 1; }
+#theme-toggle svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
 }
 
-@keyframes fadeout {
-    from { bottom: 30px; opacity: 1; }
-    to { bottom: 0; opacity: 0; }
-}
+#theme-toggle .sun-icon { display: none; }
+#theme-toggle .moon-icon { display: block; }
 
-/* ---------- HERO ---------- */
+[data-theme="dark"] #theme-toggle .sun-icon { display: block; }
+[data-theme="dark"] #theme-toggle .moon-icon { display: none; }
+
+/* ---------- 4. HERO SECTION ---------- */
 .hero {
     max-width: 500px;
-    margin: 20px auto;
+    margin: 16px auto;
     padding: 0 16px;
 }
 
@@ -103,7 +167,7 @@ body {
 
 .hero-image-wrapper img {
     width: 100%;
-    height: 260px;
+    height: 240px;
     object-fit: cover;
     border-radius: 16px;
     display: block;
@@ -113,45 +177,49 @@ body {
     position: absolute;
     top: 12px;
     right: 12px;
-    background-color: #E3A72E;
+    background-color: var(--accent-gold);
     color: #1C3B3A;
     padding: 6px 14px;
     border-radius: 20px;
     font-weight: bold;
+    font-size: 13px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
 .highlight-badge {
     position: absolute;
     bottom: 12px;
     left: 12px;
-    background-color: #0F5C5A;
+    background-color: var(--accent-teal);
     color: white;
     padding: 6px 14px;
     border-radius: 20px;
-    font-size: 13px;
+    font-size: 12px;
     max-width: 80%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
 }
 
 .hero-content {
-    padding: 16px 4px;
+    padding: 16px 0 4px;
 }
 
 .hero-content h2 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: bold;
-    color: #1C3B3A;
+    color: var(--text-color);
     margin-bottom: 6px;
 }
 
 .hero-content p {
     font-size: 14px;
-    color: #5F5E5A;
+    color: var(--text-muted);
     margin-bottom: 16px;
+    line-height: 1.4;
 }
 
 .add-order-btn {
     width: 100%;
-    background-color: #E3A72E;
+    background-color: var(--accent-gold);
     color: #1C3B3A;
     padding: 14px;
     border: none;
@@ -159,18 +227,20 @@ body {
     font-weight: bold;
     font-size: 15px;
     cursor: pointer;
+    box-shadow: var(--shadow);
 }
 
-/* ---------- WEEKLY MENU ---------- */
+/* ---------- 5. WEEKLY MENU ---------- */
 .weekly-menu {
     max-width: 500px;
-    margin: 30px auto;
+    margin: 28px auto;
     padding: 0 16px;
 }
 
 .weekly-menu h3 {
     margin-bottom: 12px;
-    color: #1C3B3A;
+    color: var(--text-color);
+    font-size: 18px;
 }
 
 .day-tabs {
@@ -179,42 +249,53 @@ body {
     overflow-x: auto;
     padding-bottom: 8px;
     margin-bottom: 16px;
+    scrollbar-width: none;
+}
+
+.day-tabs::-webkit-scrollbar {
+    display: none;
 }
 
 .day-tab {
     flex-shrink: 0;
     padding: 8px 16px;
     border-radius: 20px;
-    border: 1px solid #1C3B3A;
-    background-color: white;
-    color: #1C3B3A;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: var(--text-color);
     font-weight: bold;
+    font-size: 13px;
     cursor: pointer;
 }
 
 .day-tab.active {
-    background-color: #1C3B3A;
-    color: white;
+    background-color: var(--accent-teal);
+    color: #FFFFFF;
+    border-color: var(--accent-teal);
 }
 
 .menu-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
 }
 
 .menu-card {
-    background-color: white;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 10px;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    box-shadow: var(--shadow);
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .menu-card img {
     width: 100%;
-    height: 90px;
+    height: 95px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 8px;
@@ -222,15 +303,15 @@ body {
 
 .menu-card .day-label {
     font-size: 11px;
-    color: #5F5E5A;
+    color: var(--text-muted);
     font-weight: bold;
 }
 
 .today-tag {
     position: absolute;
-    top: 16px;
-    right: 16px;
-    background: #0F5C5A;
+    top: 14px;
+    right: 14px;
+    background: var(--accent-teal);
     color: white;
     font-size: 9px;
     font-weight: bold;
@@ -240,40 +321,42 @@ body {
 }
 
 .menu-card.disabled-card {
-    opacity: 0.75;
-    background-color: #f2efe9;
+    opacity: 0.65;
+    background-color: var(--disabled-bg);
 }
 
 .today-tag.unavailable-tag {
-    background: #777;
+    background: #777777;
 }
 
 .menu-card .dish-name {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
-    color: #1C3B3A;
+    color: var(--text-color);
+    line-height: 1.2;
 }
 
 .menu-card .dish-desc {
     font-size: 11px;
-    color: #777;
+    color: var(--text-muted);
     margin-top: 4px;
+    line-height: 1.3;
 }
 
 .menu-card .dish-price {
     font-size: 13px;
-    color: #E3A72E;
+    color: var(--accent-gold);
     font-weight: bold;
     margin-top: 6px;
 }
 
 .card-add-btn {
     width: 100%;
-    margin-top: 8px;
-    padding: 6px;
-    border-radius: 12px;
+    margin-top: 10px;
+    padding: 8px 4px;
+    border-radius: 10px;
     border: none;
-    background-color: #0F5C5A;
+    background-color: var(--accent-teal);
     color: white;
     font-size: 11px;
     font-weight: bold;
@@ -281,49 +364,52 @@ body {
 }
 
 .card-add-btn.btn-disabled {
-    background-color: #888;
+    background-color: #777777;
     cursor: not-allowed;
 }
 
-/* ---------- CONTACT SECTION ---------- */
+/* ---------- 6. CONTACT SECTION ---------- */
 .contact-section {
     max-width: 500px;
-    margin: 40px auto;
+    margin: 32px auto;
     padding: 0 16px;
 }
 
 .contact-section h3 {
-    margin-bottom: 16px;
-    color: #1C3B3A;
+    margin-bottom: 14px;
+    color: var(--text-color);
 }
 
 .contact-cards {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 12px;
 }
 
 .contact-card {
-    background: white;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
     padding: 14px;
     border-radius: 12px;
     text-align: center;
+    box-shadow: var(--shadow);
 }
 
 .contact-card strong {
     display: block;
     font-size: 12px;
-    color: #5F5E5A;
+    color: var(--text-muted);
     margin-bottom: 4px;
 }
 
 .contact-card a, .contact-card p {
-    font-size: 14px;
+    font-size: 13px;
     font-weight: bold;
-    color: #0F5C5A;
+    color: var(--accent-teal);
+    word-break: break-word;
 }
 
-/* ---------- CART DRAWER & MODALS ---------- */
+/* ---------- 7. CART DRAWER (FIXED DARK MODE TEXT) ---------- */
 .cart-overlay, .modal-overlay {
     display: none;
     position: fixed;
@@ -331,8 +417,9 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.6);
     z-index: 200;
+    backdrop-filter: blur(2px);
 }
 
 .cart-overlay.open, .modal-overlay.open {
@@ -344,13 +431,15 @@ body {
     top: 0;
     right: -100%;
     width: 320px;
-    max-width: 90%;
+    max-width: 85%;
     height: 100%;
-    background-color: #FAF6EF;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     z-index: 201;
     transition: right 0.3s ease;
     display: flex;
     flex-direction: column;
+    box-shadow: -4px 0 16px rgba(0,0,0,0.2);
 }
 
 .cart-drawer.open {
@@ -362,7 +451,14 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 16px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.cart-header h3, .checkout-header h3 {
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: bold;
 }
 
 .cart-header button, .checkout-header button {
@@ -370,7 +466,8 @@ body {
     border: none;
     font-weight: bold;
     cursor: pointer;
-    color: #1C3B3A;
+    color: var(--text-color);
+    font-size: 18px;
 }
 
 .cart-items {
@@ -383,30 +480,59 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: white;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 10px;
+    color: var(--text-color);
+}
+
+.cart-item-info h4, .cart-item-info p, .cart-item-info span {
+    color: var(--text-color);
+}
+
+.cart-item-title {
+    font-size: 13px;
+    font-weight: bold;
+    color: var(--text-color);
+}
+
+.cart-item-price {
+    font-size: 12px;
+    color: var(--accent-gold);
+    font-weight: bold;
+    margin-top: 2px;
 }
 
 .cart-item .qty-controls {
     display: flex;
     align-items: center;
     gap: 8px;
+    color: var(--text-color);
 }
 
 .cart-item .qty-controls button {
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
     border-radius: 50%;
-    border: 1px solid #1C3B3A;
-    background: white;
+    border: 1px solid var(--border-color);
+    background: var(--bg-color);
+    color: var(--text-color);
     cursor: pointer;
+    font-weight: bold;
+}
+
+.cart-item .qty-controls span {
+    color: var(--text-color);
+    font-weight: bold;
+    font-size: 13px;
 }
 
 .cart-footer {
     padding: 16px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid var(--border-color);
+    background-color: var(--bg-color);
 }
 
 .cart-total {
@@ -414,12 +540,14 @@ body {
     justify-content: space-between;
     font-weight: bold;
     margin-bottom: 12px;
+    color: var(--text-color);
+    font-size: 15px;
 }
 
 #checkout-btn, #send-whatsapp-btn {
     width: 100%;
-    background-color: #0F5C5A;
-    color: white;
+    background-color: var(--accent-teal);
+    color: #FFFFFF;
     padding: 14px;
     border: none;
     border-radius: 30px;
@@ -427,20 +555,22 @@ body {
     cursor: pointer;
 }
 
-/* ---------- CHECKOUT MODAL ---------- */
+/* ---------- 8. CHECKOUT MODAL (FIXED DARK MODE TEXT) ---------- */
 .checkout-modal {
     display: none;
     position: fixed;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    width: 420px;
-    max-width: 95%;
+    width: 440px;
+    max-width: 100%;
     max-height: 90vh;
-    background-color: #FAF6EF;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     border-radius: 20px 20px 0 0;
     z-index: 202;
     overflow-y: auto;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.25);
 }
 
 .checkout-modal.open {
@@ -449,6 +579,7 @@ body {
 
 .checkout-body {
     padding: 16px;
+    color: var(--text-color);
 }
 
 .checkout-modal label {
@@ -456,6 +587,7 @@ body {
     font-size: 13px;
     font-weight: bold;
     margin: 10px 0 4px;
+    color: var(--text-color);
 }
 
 .checkout-modal input[type="text"],
@@ -463,16 +595,18 @@ body {
 .checkout-modal textarea {
     display: block;
     width: 100%;
-    padding: 10px;
+    padding: 11px;
     border-radius: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
+    background-color: var(--card-bg);
+    color: var(--text-color);
     font-size: 14px;
 }
 
 .order-type-group {
     display: flex;
     gap: 16px;
-    margin-top: 4px;
+    margin-top: 6px;
 }
 
 .radio-label {
@@ -483,19 +617,19 @@ body {
     font-weight: normal !important;
     margin: 0 !important;
     cursor: pointer;
+    color: var(--text-color) !important;
 }
 
 .checkout-summary {
-    margin: 12px 0 4px;
+    margin: 14px 0 6px;
     font-weight: bold;
     font-size: 15px;
-    color: #1C3B3A;
+    color: var(--text-color);
 }
 
-/* PAYMENT BOX & TILL COPY */
 .payment-box {
-    background-color: #E8F5E9;
-    border: 1px solid #C8E6C9;
+    background-color: rgba(46, 125, 50, 0.08);
+    border: 1px solid rgba(46, 125, 50, 0.3);
     border-radius: 10px;
     padding: 12px;
     margin: 12px 0;
@@ -504,6 +638,10 @@ body {
 .payment-box strong {
     color: #2E7D32;
     font-size: 13px;
+}
+
+[data-theme="dark"] .payment-box strong {
+    color: #81C784;
 }
 
 .till-row {
@@ -515,20 +653,20 @@ body {
 
 .till-row p {
     font-size: 14px;
-    color: #1C3B3A;
+    color: var(--text-color);
 }
 
 .till-no {
     font-weight: bold;
-    color: #0F5C5A;
+    color: var(--accent-teal);
     letter-spacing: 1px;
 }
 
 #copy-till-btn {
-    background: #0F5C5A;
-    color: white;
+    background: var(--accent-teal);
+    color: #FFFFFF;
     border: none;
-    padding: 4px 10px;
+    padding: 6px 12px;
     border-radius: 6px;
     font-size: 11px;
     font-weight: bold;
@@ -537,22 +675,15 @@ body {
 
 .payment-box small {
     display: block;
-    color: #5F5E5A;
-    margin-top: 2px;
-}
-
-.payment-method-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin: 8px 0 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
 }
 
 .stk-action-btn {
     width: 100%;
     background-color: #2E7D32;
-    color: white;
-    padding: 10px;
+    color: #FFFFFF;
+    padding: 12px;
     border: none;
     border-radius: 8px;
     font-weight: bold;
@@ -571,16 +702,11 @@ body {
     text-align: center;
 }
 
-.stk-status-msg.success {
-    color: #2E7D32;
-}
-
-.stk-status-msg.pending {
-    color: #E3A72E;
-}
+.stk-status-msg.success { color: #2E7D32; }
+.stk-status-msg.pending { color: var(--accent-gold); }
 
 #send-whatsapp-btn {
-    background-color: #E3A72E;
+    background-color: var(--accent-gold);
     color: #1C3B3A;
     margin-top: 8px;
 }
@@ -591,245 +717,156 @@ body {
     margin-top: 8px;
 }
 
-/* ---------- DESKTOP ---------- */
-@media (min-width: 768px) {
-    .navigation {
-        padding: 20px 60px;
-    }
-    .navigation .nav a {
-        margin-left: 40px;
-    }
-    .hero, .contact-section {
-        max-width: 700px;
-    }
-    .hero-image-wrapper img {
-        height: 380px;
-    }
-    .weekly-menu {
-        max-width: 900px;
-    }
-    .menu-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-}
-/* ---------- BRAND & CURSIVE TAGLINE ---------- */
-.brand-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+/* ---------- 9. TOAST NOTIFICATION ---------- */
+.toast {
+    visibility: hidden;
+    min-width: 220px;
+    background-color: var(--accent-teal);
+    color: #fff;
+    text-align: center;
+    border-radius: 20px;
+    padding: 12px 16px;
+    position: fixed;
+    z-index: 300;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    font-size: 13px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
 }
 
-.brand-container img {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
+.toast.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
 }
 
-.tagline {
-    font-family: 'Dancing Script', cursive;
-    font-size: 20px;
-    font-weight: 700;
-    color: #0F5C5A;
-    line-height: 1.1;
-    max-width: 160px;
+@keyframes fadein {
+    from { bottom: 0; opacity: 0; }
+    to { bottom: 30px; opacity: 1; }
 }
 
-/* Adjust responsiveness for mobile screens */
+@keyframes fadeout {
+    from { bottom: 30px; opacity: 1; }
+    to { bottom: 0; opacity: 0; }
+}
+
+/* ---------- 10. MEDIA QUERIES (MOBILE OPTIMIZATIONS) ---------- */
+
+/* Mobile Phones (up to 600px) */
 @media (max-width: 600px) {
-    .tagline {
-        font-size: 15px;
-        max-width: 120px;
-    }
-}
-/* ---------- MOBILE VIEW HEADER ADJUSTMENT ---------- */
-@media (max-width: 768px) {
-    /* Main navigation container stays on a single line */
     .navigation {
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 10px;
-        gap: 6px;
-    }
-
-    /* Brand logo + cursive tagline styling */
-    .brand-container {
-        display: flex;
-        align-items: center;
-        gap: 6px;
+        padding: 8px 12px;
     }
 
     .brand-container img {
-        width: 38px;
-        height: 38px;
+        width: 34px;
+        height: 34px;
     }
 
     .tagline {
         font-size: 11px;
-        max-width: 85px;
-        line-height: 1;
+        max-width: 75px;
     }
 
-    /* Keeps HOME, MENU, and CONTACT US in one horizontal row */
     .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-        gap: 6px;
+        gap: 8px;
     }
 
     .nav a {
-        white-space: nowrap;
-        font-size: 10px;
-        padding: 2px 0;
-    }
-
-    /* Scaled-down cart button */
-    #cart-btn {
-        padding: 5px 8px;
-        font-size: 10px;
-        white-space: nowrap;
-    }
-}
-/* ---------- TABLETS & LARGE PHONES (max-width: 600px) ---------- */
-@media (max-width: 600px) {
-    .navigation {
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-        justify-content: space-between;
-        padding: 8px 10px;
-        gap: 6px;
-    }
-
-    .brand-container {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .brand-container img {
-        width: 36px;
-        height: 36px;
-    }
-
-    .tagline {
         font-size: 11px;
-        max-width: 85px;
-        line-height: 1;
     }
 
-    /* Keeps HOME, MENU, and CONTACT US strictly side-by-side */
-    .nav {
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-        gap: 6px;
+    .navigation button#cart-btn {
+        padding: 6px 10px;
+        font-size: 11px;
     }
 
-    .nav a {
-        white-space: nowrap;
-        font-size: 10px;
-        padding: 2px 0;
-    }
-
-    #cart-btn {
-        padding: 5px 8px;
-        font-size: 10px;
-        white-space: nowrap;
-    }
-}
-
-/* ---------- SMALL MOBILE PHONES (max-width: 480px) ---------- */
-@media (max-width: 480px) {
-    .navigation {
-        padding: 6px 8px;
-        gap: 4px;
-    }
-
-    .brand-container img {
+    #theme-toggle {
         width: 30px;
         height: 30px;
     }
 
-    .tagline {
-        font-size: 9px;
-        max-width: 70px;
+    #theme-toggle svg {
+        width: 15px;
+        height: 15px;
     }
 
-    .nav {
-        gap: 4px;
+    .hero-image-wrapper img {
+        height: 200px;
+    }
+
+    .hero-content h2 {
+        font-size: 19px;
+    }
+
+    .menu-card img {
+        height: 80px;
+    }
+
+    .contact-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Small Screens (up to 400px) */
+@media (max-width: 400px) {
+    .tagline {
+        display: none;
     }
 
     .nav a {
-        font-size: 9px;
+        font-size: 10px;
     }
 
-    #cart-btn {
-        padding: 4px 6px;
-        font-size: 9px;
+    .navigation button#cart-btn {
+        padding: 5px 8px;
+        font-size: 10px;
+    }
+
+    .menu-grid {
+        gap: 8px;
+    }
+
+    .menu-card {
+        padding: 8px;
     }
 }
-/* ---------- COLOR VARIABLES & BASE STYLES ---------- */
-:root {
-    --bg-color: #ffffff;
-    --text-color: #222222;
-    --card-bg: #f9f9f9;
-    --header-bg: #ffffff;
-    --accent-color: #0F5C5A;
-}
 
-/* Explicit Dark Theme Overrides */
-[data-theme="dark"] {
-    --bg-color: #121212;
-    --text-color: #f0f0f0;
-    --card-bg: #1e1e1e;
-    --header-bg: #1a1a1a;
-    --accent-color: #26a69a;
-}
+/* Desktop View (768px and up) */
+@media (min-width: 768px) {
+    .navigation {
+        padding: 16px 40px;
+    }
 
-/* Force body background and text color explicitly */
-body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
+    .brand-container img {
+        width: 52px;
+        height: 52px;
+    }
 
-header, .navigation {
-    background-color: var(--header-bg);
-}
+    .tagline {
+        font-size: 18px;
+        max-width: 150px;
+    }
 
-.menu-card, .card {
-    background-color: var(--card-bg);
-}
-#theme-toggle {
-    background: transparent;
-    border: 1px solid var(--accent-color);
-    color: var(--text-color);
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-}
+    .nav {
+        gap: 28px;
+    }
 
-/* Default state (Light Theme): Show moon icon to switch to dark */
-#theme-toggle .sun-icon {
-    display: none;
-}
-#theme-toggle .moon-icon {
-    display: block;
-}
+    .hero, .contact-section {
+        max-width: 700px;
+    }
 
-/* Dark Theme state: Show sun icon to switch to light */
-[data-theme="dark"] #theme-toggle .sun-icon {
-    display: block;
-}
-[data-theme="dark"] #theme-toggle .moon-icon {
-    display: none;
+    .hero-image-wrapper img {
+        height: 340px;
+    }
+
+    .weekly-menu {
+        max-width: 900px;
+    }
+
+    .menu-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+    }
 }
